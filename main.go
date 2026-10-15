@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/benn0x/backup-cloud/config"
+	"github.com/benn0x/backup-cloud/scheduler"
 )
 
 func main() {
@@ -16,10 +17,8 @@ func main() {
 			fmt.Println(err)
 		}
 
-		fmt.Printf("Beginning backup scheduler. Next backup in %g minutes\n", config.Config.BackupInterval)
-		tick := time.Tick(time.Second * time.Duration(config.Config.BackupInterval*60))
-		for range tick {
-			fmt.Println("Should start backup")
+		if err := scheduler.StartScheduler(time.Second * time.Duration(config.Config.BackupInterval*60)); err != nil {
+			fmt.Println(err)
 		}
 	}
 }
