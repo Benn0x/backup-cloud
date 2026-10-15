@@ -9,6 +9,7 @@ import (
 
 var quit = make(chan struct{})
 
+// Starts the scheduler and keeps an eye on any errors to return to the core program.
 func StartScheduler(duration time.Duration) error {
 	fmt.Printf("Beginning backup scheduler. Next backup in %g minutes\n", config.Config.BackupInterval)
 	ticker := time.NewTicker(duration)
