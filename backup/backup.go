@@ -92,7 +92,6 @@ func OpenFiles(paths []string) ([]BackupFile, error) {
 // Starts a backup depending on how the program is configured.
 func StartBackup() error {
 	err, FilePaths := files.Walk(config.Config.BackupOrigin)
-	fmt.Println(FilePaths)
 
 	if err != nil {
 		return err

@@ -26,7 +26,7 @@ func cleanupTempFile() error {
 		return err
 	}
 
-	if err := os.Remove(tempPath); err != nil {
+	if err := os.RemoveAll(tempPath); err != nil {
 		return err
 	}
 
