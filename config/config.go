@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"path"
 )
@@ -103,6 +104,8 @@ func LoadConfig() error {
 		if err != nil {
 			return err
 		}
+
+		return fmt.Errorf("Couldn't find the configuration. It has been generated and will need to be edited. Check the documentation for more information.")
 	} else {
 		file, err := os.Open(configPath)
 		if err != nil {
