@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path"
+	"path/filepath"
 
 	"github.com/benn0x/backup-cloud/config"
 	"github.com/benn0x/backup-cloud/files"
@@ -20,7 +21,13 @@ type BackupFile struct {
 // Writes the contents of a file to the zip given
 func AddToZipArchive(archiveFile *os.File, archivePathName string, archiveWriter *zip.Writer) error {
 	buffer := make([]byte, 1024*64)
-	writer, err := archiveWriter.Create(archivePathName)
+
+	relative, err := filepath.Rel(config.Config.BackupOrigin, archivePathName)
+	if err != nil {
+		return err
+	}
+
+	writer, err := archiveWriter.Create(relative)
 	if err != nil {
 		return err
 	}
@@ -66,8 +73,7 @@ func OpenFiles(paths []string) ([]BackupFile, error) {
 
 	for _, p := range paths {
 		dir, _ := path.Split(p)
-		dir2, _ := path.Split(config.Config.Local.BackupLocation)
-		if dir != dir2 {
+		if dir != config.Config.BackupLocation {
 			file, err := os.Open(p)
 			if err != nil {
 				return nil, err
@@ -86,6 +92,8 @@ func OpenFiles(paths []string) ([]BackupFile, error) {
 // Starts a backup depending on how the program is configured.
 func StartBackup() error {
 	err, FilePaths := files.Walk(config.Config.BackupOrigin)
+	fmt.Println(FilePaths)
+
 	if err != nil {
 		return err
 	}

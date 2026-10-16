@@ -24,9 +24,11 @@ func RegisterPaths() error {
 
 	pathlist := []PathDef{
 		{Name: "config", Path: "C:\\Program Files\\Cloud Backups\\config.json", ApplicableOS: "windows"},
+		{Name: "temp", Path: "C:\\Program Files\\Cloud Backups\\temp\\", ApplicableOS: "windows"},
 		{Name: "logs", Path: "C:\\Program Files\\Cloud Backups\\logs\\", ApplicableOS: "windows"},
 
 		{Name: "config", Path: "/etc/cloud-backup/config.json", ApplicableOS: "linux"},
+		{Name: "temp", Path: "/etc/cloud-backup/temp/", ApplicableOS: "linux"},
 		{Name: "logs", Path: "/var/cloud-backup/", ApplicableOS: "linux"},
 	}
 

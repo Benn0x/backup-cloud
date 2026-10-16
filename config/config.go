@@ -12,12 +12,7 @@ type cloudflareConfig struct {
 	AccessKeyId     string `json:"accessKeyId"`
 	SecretAccessKey string `json:"secretAccessKey"`
 	AccountId       string `json:"accountId"`
-}
-
-// The structure of the configuration if backupType is "local"
-type localConfig struct {
-	BackupLocation string `json:"backupLocation"`
-	ArchiveBackup  bool   `json:"archiveBackup"`
+	BucketName      string `json:"bucketName"`
 }
 
 // The structure of a configuration
@@ -25,8 +20,8 @@ type config struct {
 	BackupInterval float32          `json:"backupInterval"`
 	BackupType     string           `json:"backupType"`
 	BackupOrigin   string           `json:"backupOrigin"`
+	BackupLocation string           `json:"backupLocation"`
 	Cloudflare     cloudflareConfig `json:"cloudflare"`
-	Local          localConfig      `json:"local"`
 }
 
 // An empty config that can be accessed globally
@@ -57,14 +52,12 @@ func writeConfigTemplate(configFile *os.File) error {
 		BackupInterval: 60,
 		BackupType:     "local",
 		BackupOrigin:   "path_of_files_to_backup",
+		BackupLocation: "backup_output_location",
 		Cloudflare: cloudflareConfig{
 			AccessKeyId:     "account_key_id",
 			SecretAccessKey: "secret_access_key",
 			AccountId:       "account_id",
-		},
-		Local: localConfig{
-			BackupLocation: "backup_output_location",
-			ArchiveBackup:  true,
+			BucketName:      "bucket_name",
 		},
 	}
 
