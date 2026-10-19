@@ -2,6 +2,8 @@ package config
 
 import (
 	"fmt"
+	"os"
+	"path"
 	"runtime"
 )
 
@@ -22,10 +24,15 @@ func RegisterPaths() error {
 	// used for registration and shouldn't
 	// be changed willy nilly
 
+	windowsAppData, err := os.UserConfigDir()
+	if err != nil {
+		return err
+	}
+
 	pathlist := []PathDef{
-		{Name: "config", Path: "C:\\Program Files\\Cloud Backups\\config.json", ApplicableOS: "windows"},
-		{Name: "temp", Path: "C:\\Program Files\\Cloud Backups\\temp\\", ApplicableOS: "windows"},
-		{Name: "logs", Path: "C:\\Program Files\\Cloud Backups\\logs\\", ApplicableOS: "windows"},
+		{Name: "config", Path: path.Join(windowsAppData, `\Cloud Backups\config.json`), ApplicableOS: "windows"},
+		{Name: "temp", Path: path.Join(windowsAppData, `\Cloud Backups\temp\`), ApplicableOS: "windows"},
+		{Name: "logs", Path: path.Join(windowsAppData, `\Cloud Backups\logs\`), ApplicableOS: "windows"},
 
 		{Name: "config", Path: "/etc/cloud-backup/config.json", ApplicableOS: "linux"},
 		{Name: "temp", Path: "/etc/cloud-backup/temp/", ApplicableOS: "linux"},

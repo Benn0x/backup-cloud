@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	conf "github.com/benn0x/backup-cloud/config"
+	files_service "github.com/benn0x/backup-cloud/files"
 )
 
 // Cleans up temporary archive after the upload.
@@ -41,7 +42,7 @@ func createTempLocalBackup(files []BackupFile) (error, string) {
 		return err, ""
 	}
 	backupName := path.Join(tempPath, fmt.Sprintf("%s_backup.zip", time.Now().Format("D2006_01_02T15_04_05")))
-	err, archiveFile := CreateZipArchive(backupName)
+	err, archiveFile := files_service.CreateZipArchive(backupName)
 	if err != nil {
 		return err, ""
 	}
@@ -54,7 +55,7 @@ func createTempLocalBackup(files []BackupFile) (error, string) {
 		file, path := fileToBackup.File, fileToBackup.Path
 		defer file.Close()
 
-		AddToZipArchive(file, path, zipWriter)
+		files_service.AddToZipArchive(file, path, zipWriter)
 	}
 
 	return nil, backupName

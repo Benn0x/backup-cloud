@@ -15,10 +15,10 @@ func main() {
 		// Begin the project startup
 		if err := config.LoadConfig(); err != nil {
 			fmt.Println(err)
-		}
-
-		if err := scheduler.StartScheduler(time.Second * time.Duration(config.Config.BackupInterval*60)); err != nil {
-			fmt.Println(err)
+		} else {
+			if err := scheduler.StartScheduler(time.Second * time.Duration(config.Config.BackupInterval*60)); err != nil {
+				fmt.Println(err)
+			}
 		}
 	}
 }
