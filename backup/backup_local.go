@@ -21,6 +21,7 @@ func beginLocalBackup(files []BackupFile) error {
 	defer archiveFile.Close()
 	defer zipWriter.Close()
 
+	fmt.Println("Beginning local backup.")
 	for _, fileToBackup := range files {
 		file, path := fileToBackup.File, fileToBackup.Path
 		defer file.Close()
@@ -28,5 +29,6 @@ func beginLocalBackup(files []BackupFile) error {
 		files_service.AddToZipArchive(file, path, zipWriter)
 	}
 
+	fmt.Println("Completed local backup.")
 	return nil
 }
