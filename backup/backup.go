@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/benn0x/backup-cloud/config"
 	"github.com/benn0x/backup-cloud/files"
@@ -50,17 +51,20 @@ func StartBackup() error {
 		return err
 	}
 
-	switch config.Config.BackupType {
-	case "local":
-		if err := beginLocalBackup(files); err != nil {
-			return err
+	split := strings.Split(config.Config.BackupType, ",")
+	for _, configType := range split {
+		switch configType {
+		case "local":
+			if err := beginLocalBackup(files); err != nil {
+				return err
+			}
+		case "cloudflare":
+			if err := beginCloudBackup(files); err != nil {
+				return err
+			}
+		default:
+			return fmt.Errorf("Unsupported BackupType in your configuration, refer to the documentation.")
 		}
-	case "cloudflare":
-		if err := beginCloudBackup(files); err != nil {
-			return err
-		}
-	default:
-		return fmt.Errorf("Unsupported BackupType in your configuration, refer to the documentation.")
 	}
 
 	return nil
